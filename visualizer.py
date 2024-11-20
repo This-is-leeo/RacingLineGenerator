@@ -1,46 +1,50 @@
 import pygame
-import sys
 
 # Initialize Pygame
 pygame.init()
 
-# Screen settings
-width, height = 800, 600
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Pygame Example")
+# Set up the display
+screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption("Input Feedback Example")
 
 # Colors
-white = (255, 255, 255)
-blue = (0, 0, 255)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 
-# Circle properties
-circle_x, circle_y = width // 2, height // 2
-circle_radius = 30
-circle_speed = 5
+# Font
+font = pygame.font.Font(None, 74)
 
-# Clock for controlling frame rate
-clock = pygame.time.Clock()
+# Input storage
+input_text = ""
 
-# Game loop
-while True:
+# Main loop
+running = True
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-    
-    # Movement logic (circle moves to the right)
-    circle_x += circle_speed
-    if circle_x > width:
-        circle_x = -circle_radius  # Reset position when it goes off-screen
-    
-    # Clear screen
-    screen.fill(white)
-    
-    # Draw the circle
-    pygame.draw.circle(screen, blue, (circle_x, circle_y), circle_radius)
-    
-    # Update display
+            running = False
+        
+        # Handle keyboard input
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_BACKSPACE:
+                # Remove the last character
+                input_text = input_text[:-1]
+            elif event.key == pygame.K_RETURN:
+                # Clear the input on Enter
+                input_text = ""
+            else:
+                # Add character to the input text
+                input_text += event.unicode
+
+    # Fill the screen with a background color
+    screen.fill(WHITE)
+
+    # Render the text
+    text_surface = font.render(input_text, True, BLACK)
+    screen.blit(text_surface, (50, 250))  # Position the text
+
+    # Update the display
     pygame.display.flip()
-    
-    # Control the frame rate
-    clock.tick(60)
+
+# Quit Pygame
+pygame.quit()
