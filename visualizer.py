@@ -17,6 +17,9 @@ font = pygame.font.Font(None, 74)
 # Input storage
 input_text = ""
 
+# Clock to control frame rate
+clock = pygame.time.Clock()
+
 # Main loop
 running = True
 while running:
@@ -45,6 +48,9 @@ while running:
 
     # Update the display
     pygame.display.flip()
+
+    # Limit the frame rate to 60 FPS
+    clock.tick(60)
 
 # Quit Pygame
 pygame.quit()
