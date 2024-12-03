@@ -10,27 +10,38 @@ class MainPage:
     def __init__(self, screen, track):
         self.track = track
         self.screen = screen
-        self.play_button = Button(300, 200, 200, 60, "Play", FONT, WHITE, BLUE, LIGHT_BLUE)
-        self.settings_button = Button(300, 300, 200, 60, "Settings", FONT, WHITE, BLUE, LIGHT_BLUE)
-        self.quit_button = Button(300, 400, 200, 60, "Quit", FONT, WHITE, BLUE, LIGHT_BLUE)
+        self.button_width = 400
+        self.button_height = 60
+        self.button_offset = 400
+        self.draw_button = Button((SCREEN_WIDTH-self.button_width) / 2 + self.button_offset, 100, self.button_width, self.button_height, "Draw Track", FONT, WHITE, ORANGE, PASTEL_ORANGE)
+        self.settings_button = Button((SCREEN_WIDTH-self.button_width) / 2 + self.button_offset, 200, self.button_width, self.button_height, "Load Track", FONT, WHITE, LIGHT_GRAY, LIGHT_GRAY)
+        self.calculate_button = Button((SCREEN_WIDTH-self.button_width) / 2 + self.button_offset, 300, self.button_width, self.button_height, "Calculate Racing Line", FONT, WHITE, LIGHT_GRAY, LIGHT_GRAY)
+        self.simulate_button = Button((SCREEN_WIDTH-self.button_width) / 2 + self.button_offset, 400, self.button_width, self.button_height, "Simulate", FONT, WHITE, LIGHT_GRAY, LIGHT_GRAY)
+        self.quit_button = Button((SCREEN_WIDTH-self.button_width) / 2 + self.button_offset, 500, self.button_width, self.button_height, "Quit", FONT, WHITE, RED, LIGHT_RED)
 
     def draw(self):
-        self.screen.fill(WHITE)
-        draw_text("Main Menu", FONT, BLACK, self.screen, 400, 100)
-        self.play_button.draw(self.screen)
+        self.screen.fill(BACKGROUND_COLOR)
+        draw_text("Racing Line Generator", FONT, BLACK, self.screen, (SCREEN_WIDTH) / 2 + self.button_offset , 50)
+        draw_text("Current Track", FONT, BLACK, self.screen, (SCREEN_WIDTH) / 2 - 300 , 50)
+        self.draw_button.draw(self.screen)
         self.settings_button.draw(self.screen)
         self.quit_button.draw(self.screen)
+        self.simulate_button.draw(self.screen)
+        self.calculate_button.draw(self.screen)
+        self.track.draw_track_preview(self.screen, 40, 100, 600)
 
     def handle_events(self):
         
         mouse_pos = pygame.mouse.get_pos()
         mouse_click = any(event.type == pygame.MOUSEBUTTONDOWN for event in pygame.event.get())
 
-        self.play_button.check_hover(mouse_pos)
+        self.draw_button.check_hover(mouse_pos)
         self.settings_button.check_hover(mouse_pos)
         self.quit_button.check_hover(mouse_pos)
+        self.simulate_button.check_hover(mouse_pos)
+        self.calculate_button.check_hover(mouse_pos)
 
-        if self.play_button.is_clicked(mouse_pos, mouse_click):
+        if self.draw_button.is_clicked(mouse_pos, mouse_click):
             return 'draw_track'
         elif self.settings_button.is_clicked(mouse_pos, mouse_click):
             return 'test'
@@ -44,6 +55,7 @@ class MainPage:
         pass
 
 def draw_text(text, font, color, surface, x, y):
+    
     text_obj = font.render(text, True, color)
     text_rect = text_obj.get_rect(center=(x, y))
     surface.blit(text_obj, text_rect)

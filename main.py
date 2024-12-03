@@ -9,7 +9,7 @@ from pages.MainPage import MainPage
 def main():
     pygame.init()
 
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)
 
@@ -17,7 +17,7 @@ def main():
 
     main_track = Racetrack()
     running = True
-
+    
     pages = {
         'draw_track': DrawTrack(screen, main_track),
         'quit': MainPage(screen, main_track),
@@ -29,7 +29,7 @@ def main():
         next_page = pages[current_page].handle_events()
         if current_page != next_page:
             current_page = next_page
-
+        
         pages[current_page].update()
         pages[current_page].draw()
 
